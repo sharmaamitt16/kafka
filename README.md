@@ -13,4 +13,4 @@ Steps to configure
   `docker run -it --rm --network kafka_demo_network confluentinc/cp-kafka /bin/kafka-console-consumer --bootstrap-server kafka:9092 --topic demo_topic_1`
 6. Type some message on producer and see the message on consumer.
 
-![image](../assets/producer-consumer.png)
+![image](assets/producer-consumer.png)

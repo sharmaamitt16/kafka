@@ -54,7 +54,7 @@ public class KafkaRestConroller {
 
       while (true) {
 
-          ConsumerRecords<Long, String> consumerRecords = consumer.poll();
+          ConsumerRecords<Long, String> consumerRecords = consumer.poll(1000);
           // 1000 is the time in milliseconds consumer will wait if no record is found at broker.
           if (consumerRecords.count() == 0) {
               noMessageFound++;

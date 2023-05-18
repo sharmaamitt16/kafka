@@ -16,3 +16,16 @@ Files
   1. KafkaConsumerCreator
   2. KafkaProducerCreator
 
+Spring Setup
+
+I have used VSCode setup to run spring API. Setup the VSCode for spring application.
+
+1. Install the extensions shown in below image in VSCode.
+   ![image](../assets/VSCode-extensions.png)
+
+2. Configure Spring. Go to VSCode settings and search for `spring.initializr.serviceUrl`
+   and replace the configuration with `"spring.initializr.serviceUrl": "https://start.spring.io/",`
+   ![image](../assets/VSCode-settings.png)
+
+3. Open the JavaDemoApplication.java and Run the application.
+4. Test the Producer API at http:8080//localhost/api/v1/message-producer?message=This is message

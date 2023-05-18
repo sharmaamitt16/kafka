@@ -25,7 +25,7 @@ I have used VSCode setup to run spring API. Setup the VSCode for spring applicat
 
 2. Configure Spring. Go to VSCode settings and search for `spring.initializr.serviceUrl`
    and replace the configuration with `"spring.initializr.serviceUrl": "https://start.spring.io/",`
-   ![image](../assets/VSCode-settings.png)
+   ![image](../assets/vscode-settings.png)
 
 3. Open the JavaDemoApplication.java and Run the application.
 4. Test the Producer API at http:8080//localhost/api/v1/message-producer?message=This is message

@@ -1,5 +1,6 @@
 package kafka.javademo.controllers;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -12,7 +13,6 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,10 +39,8 @@ public class KafkaRestConroller {
                 Message messageMap = new Message(KafkaConstants.TOPIC_NAME, metadata.partition(), metadata.offset(), message + "_" + index);
                 messageObjects.put(index, messageMap);
             } catch (ExecutionException e) {
-                System.out.println("Error in sending record");
                 System.out.println(e);
             } catch (InterruptedException e) {
-                System.out.println("Error in sending record");
                 System.out.println(e);
             }
         }
@@ -52,47 +50,21 @@ public class KafkaRestConroller {
     }
 
     @GetMapping("/message-consumer")
-    @ResponseBody
     public Object messageConsumer() throws JsonProcessingException {
-        int noMessageFound = 0;
+        Map<Long, Message> messageObjects = new HashMap<Long, Message>();
 
         Consumer<Long, String> consumer = KafkaConsumerCreator.createConsumer();
 
-        Map<String, String> object = new HashMap<>();
-
         while (true) {
-            // 1000 is the time in milliseconds consumer will wait if no record is found at broker.
-            ConsumerRecords<Long, String> consumerRecords = consumer.poll(000);
-
-            System.out.println("Consumer Records Count: " + consumerRecords.count());
-            if (consumerRecords.count() == 0) {
-                noMessageFound++;
-                if (noMessageFound > KafkaConstants.MAX_NO_MESSAGE_FOUND_COUNT) {
-                    System.out.println("No Record available.");
-                    // If no message found count is reached to threshold exit loop.
-                    break;
-                } else {
-                    continue;
-                }
-            }
-
-            // Print each record.
+            ConsumerRecords<Long, String> consumerRecords = consumer.poll(Duration.ofMillis(100));
             consumerRecords.forEach(record -> {
-                // System.out.println("Record Key " + record.key());
-                // System.out.println("Record value " + record.value());
-                // System.out.println("Record partition " + record.partition());
-                // System.out.println("Record offset " + record.offset());
-
-               // object.put(record.key(), record.value());
+                Message messageMap = new Message(record.topic(), record.partition(), record.offset(), record.value());
+                messageObjects.put(record.key(), messageMap);
             });
 
-            // commits the offset of record to broker.
-            consumer.commitAsync();
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(messageObjects);
         }
-        consumer.close();
-
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(object);
     }
 
 }

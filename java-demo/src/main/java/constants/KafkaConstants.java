@@ -4,7 +4,7 @@ public interface KafkaConstants {
 
   public static String KAFKA_BROKER = "localhost:29092";
 
-  public static Integer MESSAGE_COUNT=1000;
+  public static Integer MESSAGE_COUNT=5;
 
   public static String CLIENT_ID="client1";
 
@@ -12,7 +12,7 @@ public interface KafkaConstants {
 
   public static String GROUP_ID_CONFIG="consumerGroup1";
 
-  public static Integer MAX_NO_MESSAGE_FOUND_COUNT=100;
+  public static Integer MAX_NO_MESSAGE_FOUND_COUNT=5;
 
   public static String OFFSET_RESET_LATEST="latest";
 
